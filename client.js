@@ -18,12 +18,14 @@ const connect = () => {
     action: "connect"
   };
 
-  sendPacket(message, err => console.log(("Error: ", err)));
+  sendPacket(message, SERVER_PORT, SERVER_ADDRESS, err =>
+    console.log(("Error: ", err))
+  );
 };
 
-const sendPacket = (message, cb) => {
+const sendPacket = (message, port, address, cb) => {
   const data = JSON.stringify(message);
-  udpSocket.send(data, 0, data.length, SERVER_PORT, SERVER_ADDRESS, cb);
+  udpSocket.send(data, 0, data.length, port, address, cb);
 };
 
 udpSocket.on("message", (data, info) => {
@@ -32,12 +34,17 @@ udpSocket.on("message", (data, info) => {
 
   if (message.action === "newPeer") {
     connections.push(message.client);
-    console.log(message.client.port);
 
-    sendPacket("Hey new one", message.client.port, message.client.address);
+    sendPacket(
+      "Hey new one",
+      message.client.port,
+      message.client.address,
+      err => console.log(err)
+    );
   } else if (message.action === "peers") {
     connections.push(...message.peers);
   } else {
+    // TODO: Display the actual messages
   }
 });
 
