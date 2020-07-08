@@ -1,7 +1,16 @@
+// TODO: Solve message not beeing send from server to clients
+// TODO: Clients are not messaging each other
 const net = require("net");
 const dgram = require("dgram");
 
+const servers = {
+  local: "127.0.0.1",
+  server: "198.58.122.111",
+  mobile: "177.79.105.48"
+};
+
 const udpSocket = dgram.createSocket("udp4");
+const server = process.argv[3];
 
 const client = {
   name: process.argv[2]
@@ -9,7 +18,8 @@ const client = {
 
 const connections = [];
 
-const SERVER_ADDRESS = "0.0.0.0";
+const SERVER_ADDRESS = servers[server];
+console.log(SERVER_ADDRESS);
 const SERVER_PORT = 3601;
 
 const connect = () => {
@@ -24,13 +34,15 @@ const connect = () => {
 };
 
 const sendPacket = (message, port, address, cb) => {
+  console.log("OUT: ", message);
+
   const data = JSON.stringify(message);
   udpSocket.send(data, 0, data.length, port, address, cb);
 };
 
 udpSocket.on("message", (data, info) => {
   const message = JSON.parse(data.toString());
-  console.log(message);
+  console.log("IN: ", message);
 
   if (message.action === "newPeer") {
     connections.push(message.client);
