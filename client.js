@@ -54,6 +54,12 @@ udpSocket.on("message", (data, info) => {
       err => console.log(err)
     );
   } else if (message.action === "peers") {
+    message.peers.map(peer => {
+      sendPacket("Im new here", peer.port, peer.address, err =>
+        console.log(err)
+      );
+    });
+
     connections.push(...message.peers);
   } else {
     // TODO: Display the actual messages
@@ -61,5 +67,18 @@ udpSocket.on("message", (data, info) => {
 });
 
 udpSocket.bind();
+
+process.stdin.on("data", data => {
+  const message = data.toString().trim();
+
+  const packetContent = {
+    action: "message",
+    message
+  };
+
+  connections.map(peer => {
+    sendPacket(packetContent, peer.port, peer.address, err => console.log(err));
+  });
+});
 
 connect();
