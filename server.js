@@ -22,7 +22,7 @@ const handleIncomingMessage = (data, info) => {
 
     // When a new peer is trying to connect, send to it all
     // the nodes in the network
-    sendPacket({ peers, action: "peers" }, port, address);
+    sendPacket({ peers, action: "server::announceMe" }, port, address);
 
     broadcastNewPeer(client);
 
@@ -32,7 +32,7 @@ const handleIncomingMessage = (data, info) => {
 
 const broadcastNewPeer = client => {
   peers.forEach(peer =>
-    sendPacket({ client, action: "newPeer" }, peer.port, peer.address)
+    sendPacket({ client, action: "server::newPeer" }, peer.port, peer.address)
   );
 };
 
