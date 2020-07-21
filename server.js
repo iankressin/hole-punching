@@ -20,9 +20,8 @@ const handleIncomingMessage = (data, info) => {
     const { port, address } = info;
     const client = { name: data.client.name, port, address };
 
-    // When a new peer is trying to connect, send to it all
-    // the nodes in the network
-    sendPacket({ peers, action: "server::announceMe" }, port, address);
+    // Send to the new peer, the hole list of peers already connected
+    sendPacket({ peers, action: "server::swarm" }, port, address);
 
     broadcastNewPeer(client);
 
@@ -30,6 +29,8 @@ const handleIncomingMessage = (data, info) => {
   }
 };
 
+// When a new peer is trying to connect, send to it all
+// the nodes in the network
 const broadcastNewPeer = client => {
   peers.forEach(peer =>
     sendPacket({ client, action: "server::newPeer" }, peer.port, peer.address)
