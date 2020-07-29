@@ -1,12 +1,9 @@
-// TODO: Solve message not beeing send from server to clients
-// TODO: Clients are not messaging each other
 const net = require("net");
 const dgram = require("dgram");
 
 const servers = {
   local: "127.0.0.1",
-  server: "198.58.122.111",
-  mobile: "177.79.105.48"
+  server: "",
 };
 
 const udpSocket = dgram.createSocket("udp4");
