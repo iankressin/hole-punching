@@ -1,4 +1,5 @@
 const dgram = require("dgram");
+const mininet = require("mininet/host");
 
 const PORT = 3601;
 const socket = dgram.createSocket("udp4");
@@ -6,6 +7,7 @@ const socket = dgram.createSocket("udp4");
 const peers = [];
 
 socket.on("listening", () => {
+  mininet("listening");
   console.log(socket.address());
 });
 
