@@ -3,8 +3,7 @@ const dgram = require("dgram");
 const events = require("./events");
 
 class UdpServer {
-  SERVER_ADDRESS = "198.58.122.111";
-  // SERVER_ADDRESS = "127.0.0.1";
+  SERVER_ADDRESS = "";
   SERVER_PORT = 3601;
 
   client = { name: "" };
